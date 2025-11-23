@@ -1,5 +1,5 @@
 #include "s21_cat.h"
-#include "s21_cat_output.h"
+#include "s21_cat_flags.h"
 
 int main(int argc, char *argv[]) {
     cat_flags flags = {0};

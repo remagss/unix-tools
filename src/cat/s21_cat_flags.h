@@ -1,5 +1,5 @@
-#ifndef S21_CAT_OUTPUT_H
-#define S21_CAT_OUTPUT_H
+#ifndef S21_CAT_FLAGS_H
+#define S21_CAT_FLAGS_H
 
 #include "s21_cat.h"
 

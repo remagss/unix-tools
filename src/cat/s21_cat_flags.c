@@ -1,4 +1,4 @@
-#include "s21_cat_output.h"
+#include "s21_cat_flags.h"
 
 void process_file_with_flags(FILE *file, cat_flags *flags) {
     int ch;
