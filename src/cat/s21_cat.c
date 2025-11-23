@@ -6,10 +6,6 @@ int main(int argc, char *argv[]) {
     
     int run_flag = run_cat(argc, argv, &flags);
 
-    // printf("Parsed flags: b=%d, e=%d, n=%d, s=%d, t=%d, v=%d\n", // Debug function
-    //        flags.number_nonblank, flags.show_ends, flags.number,
-    //        flags.squeeze_blank, flags.show_tabs, flags.show_nonprinting);
-        
     if (run_flag != 0) {
         handle_error(run_flag, argv);
     } else {
