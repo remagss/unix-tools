@@ -14,8 +14,7 @@
 
 typedef struct {
   int number_nonblank;  // -b (GNU: --number-nonblank)
-  int show_ends;  // -e implies -v (GNU only: -E the same, but without implying
-                  // -v)
+  int show_ends;  // -e implies -v (GNU: -E the same, but without implying -v)
   int number;     // -n (GNU: --number)
   int squeeze_blank;  // -s (GNU: --squeeze-blank)
   int show_tabs;  // -t implies -v (GNU: -T the same, but without implying -v)
