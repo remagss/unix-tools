@@ -3,12 +3,22 @@
 
 int main(int argc, char *argv[]) {
     cat_flags flags = {0};
-    
+    int exit_code = SUCCESS;
+    int should_process_files = 1;
+
     int run_flag = run_cat(argc, argv, &flags);
 
-    if (run_flag != 0) {
+    if (flags.show_help) {
+        show_help();
+        should_process_files = 0;
+    }
+    else if (run_flag != SUCCESS) {
         handle_error(run_flag, argv);
-    } else {
+        exit_code = run_flag;
+        should_process_files = 0;
+    }
+
+    if (should_process_files) {
         for (int i = 1; i < argc; i++) {
             if (argv[i][0] != '-') {
                 print_file_content(argv[i], &flags);
@@ -16,7 +26,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    return run_flag;
+    return exit_code;
 }
 
 int run_cat(int argc, char *argv[], cat_flags *flags) {
@@ -62,8 +72,10 @@ int parse_gnu_flags(char *arg, cat_flags *flags) {
         flags->number = 1;
     } else if (strcmp(arg, "--squeeze-blank") == 0) {
         flags->squeeze_blank = 1;
+    } else if (strcmp(arg, "--help") == 0) {
+        flags->show_help = 1;
     } else {
-       status_flag = ERROR; 
+        status_flag = ERROR; 
     }
     
     return status_flag;
@@ -127,6 +139,7 @@ void handle_error(int error_code, char *argv[]) {
             fprintf(stderr, "%s: No such file or directory\n", argv[0]);
             break;
     }
+    printf("Try './s21_cat --help' for more information.\n");
 }
 
 void print_file_content(const char *filename, cat_flags *flags) {
@@ -139,4 +152,28 @@ void print_file_content(const char *filename, cat_flags *flags) {
     process_file_with_flags(file, flags);
     
     fclose(file);
+}
+
+void show_help() {
+    printf("Usage: ./s21_cat [OPTION]... [FILE]...\n");
+    printf("Concatenate FILE(s) to standard output.\n\n");
+    
+    
+    printf("  -b, --number-nonblank    number nonempty output lines, overrides -n\n");
+    printf("  -e                       equivalent to -vE\n");
+    printf("  -E, --show-ends          display $ at end of each line\n");
+    printf("  -n, --number             number all output lines\n");
+    printf("  -s, --squeeze-blank      suppress repeated empty output lines\n");
+    printf("  -t                       equivalent to -vT\n");
+    printf("  -T, --show-tabs          display TAB characters as ^I\n");
+    printf("  -v, --show-nonprinting   use ^ and M- notation, except for LFD and TAB\n");
+    printf("      --help               display this help and exit\n\n");
+    
+    printf("Examples:\n");
+    printf("  s21_cat f - g  Output f's contents, then standard input, then g's contents.\n");
+    printf("  s21_cat        Copy standard input to standard output.\n\n\n");
+    
+    printf("cat implementation for School 21.\n\n");
+    printf("With love,\n");
+    printf("merlewhi/remagss\n");
 }
