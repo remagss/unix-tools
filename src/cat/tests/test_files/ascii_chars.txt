@@ -1,0 +1,4 @@
+Line with	tab
+Line with $dollar
+Normal line
+Line with controlchar
