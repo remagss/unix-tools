@@ -1,0 +1,3 @@
+Line with tab→	←tab
+Line with $dollar
+Line with special chars: \t\n
