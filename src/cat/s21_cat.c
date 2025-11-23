@@ -1,4 +1,5 @@
 #include "s21_cat.h"
+#include "s21_cat_output.h"
 
 int main(int argc, char *argv[]) {
     cat_flags flags = {0};
@@ -112,22 +113,6 @@ int parse_short_flags(char *arg, cat_flags *flags) {
     return statys_flag;
 }
 
-
-void print_file_content(const char *filename, cat_flags *flags) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Error: Cannot open file '%s'\n", filename);
-        return;
-    }
-    
-    int ch;
-    while ((ch = fgetc(file)) != EOF) {
-        putchar(ch);
-    }
-    
-    fclose(file);
-}
-
 void handle_error(int error_code, char *argv[]) {
     switch(error_code) {
         case ERROR:
@@ -146,4 +131,16 @@ void handle_error(int error_code, char *argv[]) {
             fprintf(stderr, "%s: No such file or directory\n", argv[0]);
             break;
     }
+}
+
+void print_file_content(const char *filename, cat_flags *flags) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        fprintf(stderr, "s21_cat: %s: No such file or directory\n", filename);
+        return;
+    }
+    
+    process_file_with_flags(file, flags);
+    
+    fclose(file);
 }
