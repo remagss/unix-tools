@@ -34,18 +34,18 @@ int run_cat(int argc, char *argv[], cat_flags *flags) {
 }
 
 int parse_flags(int argc, char *argv[], cat_flags *flags) {
-    int error_flag = SUCCESS;
+    int statys_flag = SUCCESS;
 
-    for (int i = 1; i < argc && error_flag == SUCCESS; i++) { 
+    for (int i = 1; i < argc && statys_flag == SUCCESS; i++) { 
         if (argv[i][0] != '-') continue;
 
         if (argv[i][1] == '-') {
             if (parse_gnu_flags(argv[i], flags) != SUCCESS) {
-                error_flag = ERROR_INVALID_GNU_FLAG;
+                statys_flag = ERROR_INVALID_GNU_FLAG;
             }
         } else {
             if (parse_short_flags(argv[i], flags) != SUCCESS) {
-                error_flag = ERROR_INVALID_SHORT_FLAG;
+                statys_flag = ERROR_INVALID_SHORT_FLAG;
             }
         }
     }
@@ -54,11 +54,11 @@ int parse_flags(int argc, char *argv[], cat_flags *flags) {
         flags->number = 0; // Disabled flag -n if -b is active 
     }
 
-    return error_flag;
+    return statys_flag;
 }
 
 int parse_gnu_flags(char *arg, cat_flags *flags) {
-    int error_flag = SUCCESS;
+    int statys_flag = SUCCESS;
     if (strcmp(arg, "--number-nonblank") == 0) {
         flags->number_nonblank = 1;
     } else if (strcmp(arg, "--number") == 0) {
@@ -66,14 +66,14 @@ int parse_gnu_flags(char *arg, cat_flags *flags) {
     } else if (strcmp(arg, "--squeeze-blank") == 0) {
         flags->squeeze_blank = 1;
     } else {
-       error_flag = ERROR; 
+       statys_flag = ERROR; 
     }
     
-    return error_flag;
+    return statys_flag;
 }
 
 int parse_short_flags(char *arg, cat_flags *flags) {
-    int error_flag = SUCCESS;
+    int statys_flag = SUCCESS;
 
     for (int j = 1; arg[j] != '\0'; j++) {
         switch (arg[j]) {
@@ -105,11 +105,11 @@ int parse_short_flags(char *arg, cat_flags *flags) {
                 flags->show_tabs = 1;
                 break;
             default:
-                error_flag = ERROR;
+                statys_flag = ERROR;
         }
     }
 
-    return error_flag;
+    return statys_flag;
 }
 
 
