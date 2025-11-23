@@ -36,10 +36,8 @@ int run_cat(int argc, char *argv[], cat_flags *flags) {
 int parse_flags(int argc, char *argv[], cat_flags *flags) {
     int error_flag = SUCCESS;
 
-    for (int i = 1; i < argc; i++) {
-        if (argv[i][0] != '-') {
-            continue;
-        }
+    for (int i = 1; i < argc && error_flag == SUCCESS; i++) { 
+        if (argv[i][0] != '-') continue;
 
         if (argv[i][1] == '-') {
             if (parse_gnu_flags(argv[i], flags) != SUCCESS) {
