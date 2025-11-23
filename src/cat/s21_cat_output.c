@@ -29,3 +29,12 @@ int process_character(int ch, cat_flags *flags, int *line_number, int *prev_ch, 
     return should_print;
 }
 
+void handle_numbering(cat_flags *flags, int ch, int *line_number, int *prev_ch) {
+    if (flags->number && *prev_ch == '\n') {
+        printf("%6d\t", (*line_number)++);
+    }
+    
+    if (flags->number_nonblank && *prev_ch == '\n' && ch != '\n') {
+        printf("%6d\t", (*line_number)++);
+    }
+}
