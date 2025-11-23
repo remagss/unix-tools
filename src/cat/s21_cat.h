@@ -20,6 +20,7 @@ typedef struct {
     int squeeze_blank;      // -s (GNU: --squeeze-blank)
     int show_tabs;          // -t implies -v (GNU: -T the same, but without implying -v)
     int show_nonprinting;   // -v
+    int show_help;          // --help
 } cat_flags;
 
 int run_cat(int argc, char *argv[], cat_flags *flags);
