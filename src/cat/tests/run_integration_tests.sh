@@ -7,11 +7,7 @@ NC='\033[0m' # No Color
 S21_CAT="./s21_cat"
 SYS_CAT="cat"
 
-TEST_FILES=(
-    "tests/test_files/basic.txt"
-    "tests/test_files/empty_lines.txt" 
-    "tests/test_files/special_chars.txt"
-)
+TEST_FILES=(tests/test_files/*.txt)
 
 FLAGS=(
     ""
