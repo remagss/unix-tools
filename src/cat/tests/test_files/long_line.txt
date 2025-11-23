@@ -1,0 +1,1 @@
+This is a very long line that should test the behavior with long lines and see how both cats handle it without any issues hopefully
