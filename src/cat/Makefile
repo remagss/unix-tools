@@ -22,10 +22,4 @@ test: $(TARGET)
 	@echo "Running integration tests..."
 	@./tests/run_integration_tests.sh
 
-test_quick: $(TARGET)
-	@./tests/run_integration_tests.sh | head -20
-
-test_single: $(TARGET)
-	@./tests/run_integration_tests.sh | grep -E "(PASS|FAIL)" | head -5
-
-.PHONY: test test_quick test_single
+.PHONY: s21_cat clean rebuild test
