@@ -8,6 +8,8 @@
 
 #define SUCCESS 0
 #define ERROR 1
+#define ERROR_INVALID_ARGS 2
+#define ERROR_FILE_OPEN 3
 
 typedef struct {
     int e;  // pattern (-e)
