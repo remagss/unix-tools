@@ -27,6 +27,7 @@ typedef struct {
 
 int run_grep(int argc, char *argv[], grep_flags *flags);
 int parse_flags(int argc, char *argv[], grep_flags *flags, char **pattern);
+int parse_gnu_flag(char *arg, grep_flags *flags);
 void handle_error(int error_code, char *argv[]);
 
 #endif

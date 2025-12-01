@@ -50,6 +50,16 @@ int parse_flags(int argc, char *argv[], grep_flags *flags, char **pattern) {
   return (status_flag == SUCCESS) ? i : status_flag;
 }
 
+int parse_gnu_flag(char *arg, grep_flags *flags) {
+  int status_flag = SUCCESS;
+  if (strcmp(arg, "--help") == 0) {
+    flags->show_help = 1;
+  } else {
+    status_flag = ERROR;
+  }
+  return status_flag;
+}
+
 void handle_error(int error_code, char *argv[]) {
   switch (error_code) {
     case ERROR:
