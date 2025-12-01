@@ -22,6 +22,7 @@ typedef struct {
     // int s;  // suppress error messages about nonexistent or unreadable files (-s)
     // int f;  // take regexes from a file (-f [file])
     // int o;  // output the matched parts of a matching line (-o)
+    int show_help;  // --help
 } grep_flags;
 
 #endif
