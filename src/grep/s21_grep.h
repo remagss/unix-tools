@@ -25,4 +25,8 @@ typedef struct {
     int show_help;  // --help
 } grep_flags;
 
+int run_grep(int argc, char *argv[], grep_flags *flags);
+void handle_error(int error_code, char *argv[]);
+
+
 #endif
