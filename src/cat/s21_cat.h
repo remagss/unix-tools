@@ -8,9 +8,9 @@
 #define SUCCESS 0
 #define ERROR 1
 #define ERROR_INVALID_ARGS 2
-#define ERROR_INVALID_SHORT_FLAG 3
-#define ERROR_INVALID_GNU_FLAG 4
-#define ERROR_FILE_OPEN 5
+#define ERROR_FILE_OPEN 3
+#define ERROR_INVALID_SHORT_FLAG 4
+#define ERROR_INVALID_GNU_FLAG 5
 
 typedef struct {
   int number_nonblank;  // -b (GNU: --number-nonblank)

@@ -129,14 +129,14 @@ void handle_error(int error_code, char *argv[]) {
     case ERROR_INVALID_ARGS:
       fprintf(stderr, "%s: invalid arguments\n", argv[0]);
       break;
+    case ERROR_FILE_OPEN:
+      fprintf(stderr, "%s: No such file or directory\n", argv[0]);
+      break;
     case ERROR_INVALID_SHORT_FLAG:
       fprintf(stderr, "%s: invalid option\n", argv[0]);
       break;
     case ERROR_INVALID_GNU_FLAG:
       fprintf(stderr, "%s: invalid GNU option\n", argv[0]);
-      break;
-    case ERROR_FILE_OPEN:
-      fprintf(stderr, "%s: No such file or directory\n", argv[0]);
       break;
   }
   printf("Try './s21_cat --help' for more information.\n");
