@@ -60,6 +60,51 @@ int parse_gnu_flag(char *arg, grep_flags *flags) {
   return status_flag;
 }
 
+int parse_short_flags(char *arg, grep_flags *flags, char **pattern,
+                      int *pattern_found) {
+  int status_flag = SUCCESS;
+  int should_break = 0;
+
+  for (int i = 1; arg[i] != '\0' && status_flag == SUCCESS; i++) {
+    switch (arg[i]) {
+      case 'e':
+        flags->e = 1;
+        status_flag = handle_e_flag(arg, i, flags, pattern, pattern_found);
+        should_break = (status_flag == SUCCESS);
+        break;
+      case 'i':
+        flags->i = 1;
+        break;
+      case 'v':
+        flags->v = 1;
+      case 'c':
+        flags->c = 1;
+        break;
+      case 'l':
+        flags->l = 1;
+        break;
+      case 'n':
+        flags->n = 1;
+        break;
+      // case 'h':
+      //   flags->h = 1;
+      //   break;
+      // case 's':
+      //   flags->s = 1;
+      //   break;
+      // case 'f':
+      //   flags->f = 1;
+      //   break;
+      // case 'o':
+      //   flags->o = 1;
+      //   break;
+      default:
+        status_flag = ERROR;
+    }
+  }
+  return status_flag;
+}
+
 void handle_error(int error_code, char *argv[]) {
   switch (error_code) {
     case ERROR:

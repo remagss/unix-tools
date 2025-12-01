@@ -20,14 +20,16 @@ typedef struct {
   int n;  // precede each matching line with a line number (-n)
   // int h;  // output matching lines without preceding them by file names (-h)
   // int s;  // suppress error messages about nonexistent or unreadable files
-  // (-s) int f;  // take regexes from a file (-f [file]) int o;  // output the
-  // matched parts of a matching line (-o)
+  // int f;  // take regexes from a file (-f [file])
+  // int o;  // output the matched parts of a matching line (-o)
   int show_help;  // --help
 } grep_flags;
 
 int run_grep(int argc, char *argv[], grep_flags *flags);
 int parse_flags(int argc, char *argv[], grep_flags *flags, char **pattern);
 int parse_gnu_flag(char *arg, grep_flags *flags);
+int parse_short_flags(char *arg, grep_flags *flags, char **pattern,
+                      int *pattern_found);
 void handle_error(int error_code, char *argv[]);
 
 #endif
