@@ -12,10 +12,6 @@ int main(int argc, char *argv[]) {
   if (flags.show_help) {
     show_help();
     should_process_files = 0;
-  } else if (status_flag != SUCCESS) {
-    handle_error(status_flag, argv);
-    exit_code = status_flag;
-    should_process_files = 0;
   }
 
   if (should_process_files) {
@@ -26,7 +22,13 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  return exit_code;
+  if (status_flag != SUCCESS) {
+    handle_error(status_flag, argv);
+    exit_code = status_flag;
+    should_process_files = 0;
+
+    return exit_code;
+  }
 }
 
 int run_cat(int argc, char *argv[], cat_flags *flags) {
@@ -142,16 +144,16 @@ void handle_error(int error_code, char *argv[]) {
   printf("Try './s21_cat --help' for more information.\n");
 }
 
-void print_file_content(const char *filename, cat_flags *flags) {
+int print_file_content(const char *filename, cat_flags *flags) {
+  int status_flag = SUCCESS;
   FILE *file = fopen(filename, "r");
   if (file == NULL) {
-    fprintf(stderr, "s21_cat: %s: No such file or directory\n", filename);
-    return;
+    status_flag = ERROR_FILE_OPEN;
+  } else {
+    process_file_with_flags(file, flags);
+    fclose(file);
   }
-
-  process_file_with_flags(file, flags);
-
-  fclose(file);
+  return status_flag;
 }
 
 void show_help() {

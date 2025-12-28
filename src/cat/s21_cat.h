@@ -26,7 +26,7 @@ int run_cat(int argc, char *argv[], cat_flags *flags);
 int parse_flags(int argc, char *argv[], cat_flags *flags);
 int parse_gnu_flags(char *arg, cat_flags *flags);
 int parse_short_flags(char *arg, cat_flags *flags);
-void print_file_content(const char *filename, cat_flags *flags);
+int print_file_content(const char *filename, cat_flags *flags);
 void handle_error(int error_code, char *argv[]);
 void show_help();
 
