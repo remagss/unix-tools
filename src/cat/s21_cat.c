@@ -7,14 +7,14 @@ int main(int argc, char *argv[]) {
   int exit_code = SUCCESS;
   int should_process_files = 1;
 
-  int run_flag = run_cat(argc, argv, &flags);
+  int status_flag = run_cat(argc, argv, &flags);
 
   if (flags.show_help) {
     show_help();
     should_process_files = 0;
-  } else if (run_flag != SUCCESS) {
-    handle_error(run_flag, argv);
-    exit_code = run_flag;
+  } else if (status_flag != SUCCESS) {
+    handle_error(status_flag, argv);
+    exit_code = status_flag;
     should_process_files = 0;
   }
 
