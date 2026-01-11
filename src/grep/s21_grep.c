@@ -77,6 +77,7 @@ int parse_short_flags(char *arg, grep_flags *flags, char **pattern,
         break;
       case 'v':
         flags->v = 1;
+        break;
       case 'c':
         flags->c = 1;
         break;
