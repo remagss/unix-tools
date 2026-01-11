@@ -117,5 +117,4 @@ void handle_error(int error_code, char *argv[]) {
       fprintf(stderr, "%s: No such file or directory\n", argv[0]);
       break;
   }
-  //   printf("Try './s21_cat --help' for more information.\n");
 }
