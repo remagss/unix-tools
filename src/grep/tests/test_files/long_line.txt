@@ -1,0 +1,3 @@
+This is a very long line that should test the behavior with long lines and see how grep handles it without any issues hopefully and contains test pattern multiple times test test test
+Short line
+Another very long line with test pattern embedded in the middle of this sentence to check if grep can find it correctly

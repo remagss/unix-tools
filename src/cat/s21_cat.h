@@ -24,6 +24,7 @@ typedef struct {
 
 int run_cat(int argc, char *argv[], cat_flags *flags);
 int parse_flags(int argc, char *argv[], cat_flags *flags);
+int process_flag_in_parse(char *arg, cat_flags *flags);
 int parse_gnu_flags(char *arg, cat_flags *flags);
 int parse_short_flags(char *arg, cat_flags *flags);
 int print_file_content(const char *filename, cat_flags *flags);

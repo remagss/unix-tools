@@ -1,0 +1,8 @@
+Hello World
+This is a test file
+With multiple lines
+test pattern here
+another test line
+no match in this line
+TEST uppercase
+Test mixed case

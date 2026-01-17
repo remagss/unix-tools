@@ -25,10 +25,9 @@ int main(int argc, char *argv[]) {
   if (status_flag != SUCCESS) {
     handle_error(status_flag, argv);
     exit_code = status_flag;
-    should_process_files = 0;
-
-    return exit_code;
   }
+
+  return exit_code;
 }
 
 int run_cat(int argc, char *argv[], cat_flags *flags) {
@@ -46,21 +45,29 @@ int parse_flags(int argc, char *argv[], cat_flags *flags) {
   int status_flag = SUCCESS;
 
   for (int i = 1; i < argc && status_flag == SUCCESS; i++) {
-    if (argv[i][0] != '-') continue;
-
-    if (argv[i][1] == '-') {
-      if (parse_gnu_flags(argv[i], flags) != SUCCESS) {
-        status_flag = ERROR_INVALID_GNU_FLAG;
-      }
-    } else {
-      if (parse_short_flags(argv[i], flags) != SUCCESS) {
-        status_flag = ERROR_INVALID_SHORT_FLAG;
-      }
+    if (argv[i][0] == '-') {
+      status_flag = process_flag_in_parse(argv[i], flags);
     }
   }
 
   if (flags->number_nonblank) {
     flags->number = 0;  // Disabled flag -n if -b is active
+  }
+
+  return status_flag;
+}
+
+int process_flag_in_parse(char *arg, cat_flags *flags) {
+  int status_flag = SUCCESS;
+
+  if (arg[1] == '-') {
+    if (parse_gnu_flags(arg, flags) != SUCCESS) {
+      status_flag = ERROR_INVALID_GNU_FLAG;
+    }
+  } else {
+    if (parse_short_flags(arg, flags) != SUCCESS) {
+      status_flag = ERROR_INVALID_SHORT_FLAG;
+    }
   }
 
   return status_flag;

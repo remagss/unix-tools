@@ -1,0 +1,9 @@
+apple fruit
+banana fruit
+carrot vegetable
+apple pie
+banana bread
+test pattern
+another test
+no match here
+test again

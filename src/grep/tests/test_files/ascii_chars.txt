@@ -1,0 +1,8 @@
+Line with	tab character
+Line with $dollar sign
+Normal line with test
+Line with test pattern
+Special chars: !@#$%^&*()
+Line with numbers 1234567890
+test at start
+end with test

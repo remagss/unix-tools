@@ -1,19 +1,29 @@
 #include "s21_grep.h"
 
+#include "s21_grep_flags.h"
+
 int main(int argc, char *argv[]) {
   grep_flags flags = {0};
   int exit_code = SUCCESS;
-  // int should_process_files = 1;
+  int should_process_files = 1;
 
-  int run_flag = run_grep(argc, argv, &flags);
+  int status_flag = run_grep(argc, argv, &flags);
 
-  if (flags.show_help) {
-    // show_help();
-    // should_process_files = 0;
-  } else if (run_flag != SUCCESS) {
-    handle_error(run_flag, argv);
-    exit_code = run_flag;
-    // should_process_files = 0;
+  if (status_flag != SUCCESS) {
+    handle_error(status_flag, argv);
+    exit_code = status_flag;
+    should_process_files = 0;
+  }
+
+  if (should_process_files && flags.pattern_count > 0) {
+    int file_count = count_files(argc, argv, &flags);
+    int multiple_files = (file_count > 1) ? 1 : 0;
+
+    for (int i = 1; i < argc; i++) {
+      if (is_file_argument(argc, argv, i, &flags)) {
+        process_file(argv[i], &flags, multiple_files);
+      }
+    }
   }
 
   return exit_code;
@@ -25,84 +35,89 @@ int run_grep(int argc, char *argv[], grep_flags *flags) {
   if (argc < 2) {
     exit_code = ERROR_INVALID_ARGS;
   } else {
-    // exit_code = parse_flags(argc, argv, flags);
+    exit_code = parse_flags(argc, argv, flags);
   }
+
+  if (exit_code == SUCCESS && flags->pattern_count == 0) {
+    exit_code = ERROR_INVALID_ARGS;
+  }
+
   return exit_code;
 }
 
-int parse_flags(int argc, char *argv[], grep_flags *flags, char **pattern) {
+int parse_flags(int argc, char *argv[], grep_flags *flags) {
   int status_flag = SUCCESS;
-  int i = 1;
   int pattern_found = 0;
+  int i = 1;
 
-  while (i < argc && argv[i][0] == '-' && status_flag == SUCCESS) {
-    if (argv[i][1] == '-') {
-      status_flag = parse_gnu_flag(argv[i], flags);
-    } else {
-      status_flag = parse_short_flags(argv[i], flags, pattern, &pattern_found);
+  while (i < argc && status_flag == SUCCESS) {
+    if (argv[i][0] == '-') {
+      status_flag =
+          process_flag_argument(argc, argv, &i, flags, &pattern_found);
+    } else if (!pattern_found) {
+      add_pattern(flags, argv[i]);
+      pattern_found = 1;
     }
     i++;
   }
-  if (status_flag == SUCCESS && !pattern_found) {
-    status_flag = handle_pattern(argc, argv, &i, pattern);
-  }
 
-  return (status_flag == SUCCESS) ? i : status_flag;
-}
-
-int parse_gnu_flag(char *arg, grep_flags *flags) {
-  int status_flag = SUCCESS;
-  if (strcmp(arg, "--help") == 0) {
-    flags->show_help = 1;
-  } else {
-    status_flag = ERROR;
-  }
   return status_flag;
 }
 
-int parse_short_flags(char *arg, grep_flags *flags, char **pattern,
-                      int *pattern_found) {
+int process_flag_argument(int argc, char *argv[], int *i, grep_flags *flags,
+                          int *pattern_found) {
   int status_flag = SUCCESS;
-  int should_break = 0;
 
-  for (int i = 1; arg[i] != '\0' && status_flag == SUCCESS; i++) {
-    switch (arg[i]) {
-      case 'e':
-        flags->e = 1;
-        status_flag = handle_e_flag(arg, i, flags, pattern, pattern_found);
-        should_break = (status_flag == SUCCESS);
-        break;
-      case 'i':
-        flags->i = 1;
-        break;
-      case 'v':
-        flags->v = 1;
-        break;
-      case 'c':
-        flags->c = 1;
-        break;
-      case 'l':
-        flags->l = 1;
-        break;
-      case 'n':
-        flags->n = 1;
-        break;
-      // case 'h':
-      //   flags->h = 1;
-      //   break;
-      // case 's':
-      //   flags->s = 1;
-      //   break;
-      // case 'f':
-      //   flags->f = 1;
-      //   break;
-      // case 'o':
-      //   flags->o = 1;
-      //   break;
-      default:
-        status_flag = ERROR;
+  if (strcmp(argv[*i], "-e") == 0) {
+    status_flag = process_e_flag(argc, argv, i, flags, pattern_found);
+  } else {
+    if (parse_short_flags(argv[*i], flags) != SUCCESS) {
+      status_flag = ERROR_INVALID_FLAG;
     }
   }
+
+  return status_flag;
+}
+
+int process_e_flag(int argc, char *argv[], int *i, grep_flags *flags,
+                   int *pattern_found) {
+  int status_flag = SUCCESS;
+
+  if (*i + 1 < argc) {
+    add_pattern(flags, argv[++(*i)]);
+    *pattern_found = 1;
+  } else {
+    status_flag = ERROR_INVALID_FLAG;
+  }
+
+  return status_flag;
+}
+
+int parse_short_flags(char *arg, grep_flags *flags) {
+  int status_flag = SUCCESS;
+
+  for (int j = 1; arg[j] != '\0'; j++) {
+    switch (arg[j]) {
+      case 'i':
+        flags->ignore_case = 1;
+        break;
+      case 'v':
+        flags->invert_match = 1;
+        break;
+      case 'c':
+        flags->count_only = 1;
+        break;
+      case 'l':
+        flags->files_with_match = 1;
+        break;
+      case 'n':
+        flags->line_number = 1;
+        break;
+      default:
+        status_flag = ERROR_INVALID_FLAG;
+    }
+  }
+
   return status_flag;
 }
 
@@ -116,6 +131,12 @@ void handle_error(int error_code, char *argv[]) {
       break;
     case ERROR_FILE_OPEN:
       fprintf(stderr, "%s: No such file or directory\n", argv[0]);
+      break;
+    case ERROR_INVALID_FLAG:
+      fprintf(stderr, "%s: invalid option\n", argv[0]);
+      break;
+    case ERROR_REGEX_COMPILE:
+      fprintf(stderr, "%s: regex compilation error\n", argv[0]);
       break;
   }
 }
