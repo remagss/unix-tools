@@ -9,7 +9,7 @@ Minimal reimplementation of Unix core utilities in C.
 - Support for multiple files
 - Error handling
 ### `grep` - Pattern Matching
-- Support of [all flags](#grep-options) including their _pair_ combinations
+- Support of [flags](#grep-options)
 - Basic regex support
 - File and stdin input
 - Case-sensitive matching
