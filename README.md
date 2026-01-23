@@ -49,10 +49,6 @@ make
 | 4   | -c      | Output count of matching lines only.                           |
 | 5   | -l      | Output matching files only.                                    |
 | 6   | -n      | Precede each matching line with a line number.                 |
-| 7   | -h      | Output matching lines without preceding them by file names.    |
-| 8   | -s      | Suppress error messages about nonexistent or unreadable files. |
-| 9   | -f file | Take regexes from a file.                                      |
-| 10  | -o      | Output the matched parts of a matching line.                   |
 ## 🎓 Context
 
 This project was done as part of the education at [School21](https://21-school.ru) 
@@ -60,3 +56,4 @@ This project was done as part of the education at [School21](https://21-school.r
 **Internal info:**
 Branch: C-1
 Project: C2_SimpleBashUtils
+Verter: 120%
