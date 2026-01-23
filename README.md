@@ -55,5 +55,6 @@ This project was done as part of the education at [School21](https://21-school.r
 
 **Internal info:**
 Branch: C-1
-Project: C2_SimpleBashUtils
+Project: C2_SimpleBashUtils 
+
 Verter: 120%
